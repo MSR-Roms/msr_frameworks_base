@@ -283,10 +283,6 @@ class KeyguardStatusViewManager implements OnClickListener {
             mDateView.setTypeface(sLightFont);
         }
 
-        if (mAlarmStatusView != null) {
-            mAlarmStatusView.setTypeface(sLightFont);
-        }
-
         mTransientTextManager = new TransientTextManager(mCarrierView);
 
         mUpdateMonitor.registerInfoCallback(mInfoCallback);
