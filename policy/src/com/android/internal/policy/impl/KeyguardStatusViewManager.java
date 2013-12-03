@@ -767,7 +767,7 @@ class KeyguardStatusViewManager implements OnClickListener {
         }
 
         final int clockAlign = Settings.System.getInt(getContext().getContentResolver(),
-                Settings.System.LOCKSCREEN_CLOCK_ALIGN, 2);
+                Settings.System.LOCKSCREEN_CLOCK_ALIGN, 1);
         int margin = (int) Math.round(getContext().getResources().getDimension(
                 R.dimen.keyguard_lockscreen_status_line_font_right_margin));
 
@@ -777,7 +777,7 @@ class KeyguardStatusViewManager implements OnClickListener {
         }
 
         int leftMargin = 0, rightMargin = 0;
-        int gravity = Gravity.RIGHT;
+        int gravity = Gravity.CENTER;
 
         switch (clockAlign) {
         case 0:
