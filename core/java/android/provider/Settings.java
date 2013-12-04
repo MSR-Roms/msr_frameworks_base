@@ -2915,7 +2915,10 @@ public final class Settings {
          public static final String VOLUME_KEY_CURSOR_CONTROL = "volume_key_cursor_control";
 
         /**
-         * Show the pending notification counts as overlays on the status bar
+         * Whether to use the custom status bar header or not
+         * @hide
+         */
+        public static final String STATUS_BAR_CUSTOM_HEADER = "status_bar_custom_header";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
