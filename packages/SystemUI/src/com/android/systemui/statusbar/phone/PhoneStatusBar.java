@@ -82,6 +82,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.FrameLayout;
@@ -95,6 +96,7 @@ import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.statusbar.StatusBarNotification;
 
 import com.android.systemui.statusbar.powerwidget.StatusBarToggles;
+import com.android.systemui.statusbar.powerwidget.VolumePanel;
 
 import com.android.systemui.R;
 import com.android.systemui.recent.RecentTasksLoader;
@@ -151,6 +153,8 @@ public class PhoneStatusBar extends BaseStatusBar {
     private static final int TOGGLES_TYPE_COMPACT = 1;
     private static final int TOGGLES_TYPE_PAGE = 2;
 
+    private static final int PAGED_ANIMATION_TIME = 240;
+
     private boolean mBrightnessControl;
 
     private static final int NOTIFICATION_PRIORITY_MULTIPLIER = 10; // see NotificationManagerService
@@ -175,6 +179,8 @@ public class PhoneStatusBar extends BaseStatusBar {
                                                     // faster than mSelfCollapseVelocityPx)
 
     PhoneStatusBarPolicy mIconPolicy;
+
+    private boolean mUseCenterClock = false;
 
     // These are no longer handled by the policy, because we need custom strategies for them
     BatteryController mBatteryController;
@@ -256,9 +262,12 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     // status bar tabhost
     TabHost mTabHost;
+    View mCurrentTab;
+    View mPreviousTab;
 
     // type of toggles
     int mTogglesType = TOGGLES_TYPE_NONE;
+    boolean mCollapseVolumes = false;
 
     // ticker
     private Ticker mTicker;
@@ -329,6 +338,10 @@ public class PhoneStatusBar extends BaseStatusBar {
                     Settings.System.STATUS_BAR_CUSTOM_HEADER), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.TOGGLES_TYPE), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.COLLAPSE_VOLUME_PANEL), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_CENTER_CLOCK), false, this);
             update();
         }
 
@@ -350,6 +363,17 @@ public class PhoneStatusBar extends BaseStatusBar {
             if (mNotificationPanel != null) {
                 setTogglesType(mTogglesType);
             }
+
+            mCollapseVolumes = Settings.System.getInt(
+                    resolver, Settings.System.COLLAPSE_VOLUME_PANEL, 0) == 1;
+
+            boolean useCenterClock = Settings.System.getInt(
+                    resolver, Settings.System.STATUS_BAR_CENTER_CLOCK, 0) == 1;
+            if (mUseCenterClock != useCenterClock) {
+                mUseCenterClock = useCenterClock;
+                recreateStatusBar();
+            }
+
             updateCustomHeaderStatus();
 
         }
@@ -464,7 +488,8 @@ public class PhoneStatusBar extends BaseStatusBar {
                 com.android.internal.R.integer.config_screenBrightnessDim);
 
         mStatusBarWindow = (StatusBarWindowView) View.inflate(context,
-                R.layout.super_status_bar, null);
+                mUseCenterClock ? R.layout.super_status_bar_center_clock : R.layout.super_status_bar,
+                null);
         if (DEBUG) {
             mStatusBarWindow.setBackgroundColor(0x6000FF80);
         }
@@ -517,6 +542,26 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         mTabHost.setCurrentTab(0);
         setTogglesType(mTogglesType);
+        mPreviousTab = mTabHost.getCurrentView();
+
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                mCurrentTab = mTabHost.getCurrentView();
+                if (mContext.getString(R.string.notification_tab_notifications).equals(tabId)) {
+                    Animation notificationsInAnimation = AnimationUtils.loadAnimation(mContext, R.anim.notifications_page_in);
+                    Animation togglesOutAnimation = AnimationUtils.loadAnimation(mContext, R.anim.toggles_page_out);
+                    mPreviousTab.setAnimation(togglesOutAnimation);
+                    mCurrentTab.setAnimation(notificationsInAnimation);
+                } else {
+                    Animation notificationsOutAnimation = AnimationUtils.loadAnimation(mContext, R.anim.notifications_page_out);
+                    Animation togglesInAnimation = AnimationUtils.loadAnimation(mContext, R.anim.toggles_page_in);
+                    mPreviousTab.setAnimation(notificationsOutAnimation);
+                    mCurrentTab.setAnimation(togglesInAnimation);
+                }
+                mPreviousTab = mCurrentTab;
+             }
+          });
 
         updateShowSearchHoldoff();
 
@@ -1537,6 +1582,9 @@ public class PhoneStatusBar extends BaseStatusBar {
         if (revealAfterDraw) {
             mHandler.post(mStartRevealAnimation);
         }
+
+        if (mCollapseVolumes)
+            ((VolumePanel)mNotificationPanel.findViewById(R.id.volume_panel)).toggleVolumes(false);
 
         visibilityChanged(true);
     }
