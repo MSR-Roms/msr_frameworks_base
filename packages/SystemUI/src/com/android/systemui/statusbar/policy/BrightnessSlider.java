@@ -60,6 +60,8 @@ public class BrightnessSlider implements SeekBar.OnSeekBarChangeListener {
             value = MAXIMUM_BACKLIGHT;
         }
 
+        mPower = IPowerManager.Stub.asInterface(ServiceManager.getService("power"));
+
         mControl.setMax(MAXIMUM_BACKLIGHT - mScreenBrightnessDim);
         mControl.setProgress(value - mScreenBrightnessDim);
 
@@ -68,6 +70,10 @@ public class BrightnessSlider implements SeekBar.OnSeekBarChangeListener {
     }
 
     private void setBrightness(int brightness) {   
+        try {
+            mPower.setBacklightBrightness(brightness);
+        } catch (RemoteException ex) {
+        }
     }
 
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
