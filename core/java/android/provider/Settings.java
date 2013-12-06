@@ -2344,6 +2344,12 @@ public final class Settings {
         public static final String SIP_ASK_ME_EACH_TIME = "SIP_ASK_ME_EACH_TIME";
 
         /**
+         * Whether or not to auto-collapse the volume panel when status bar is collapsed
+         *
+         * @hide
+         */
+        public static final String COLLAPSE_VOLUME_PANEL = "collapse_volume_panel";
+        /**
          * Torch state (flashlight)
          * @hide
          */
@@ -2357,6 +2363,13 @@ public final class Settings {
          * @hide
          */
         public static final String POINTER_SPEED = "pointer_speed";
+
+        /**
+         * Type of toggles to use: 0 = none, 1 = compact, 2 = page
+         *
+         * @hide
+         */
+        public static final String TOGGLES_TYPE = "toggles_type";
 
         /**
          * Use the Notification Power Widget? (Who wouldn't!)
