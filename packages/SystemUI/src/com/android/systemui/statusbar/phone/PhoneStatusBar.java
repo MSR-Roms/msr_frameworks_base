@@ -342,6 +342,8 @@ public class PhoneStatusBar extends BaseStatusBar {
                     Settings.System.COLLAPSE_VOLUME_PANEL), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CENTER_CLOCK), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_TRANSPARENCY), false, this);
             update();
         }
 
@@ -373,7 +375,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                 mUseCenterClock = useCenterClock;
                 recreateStatusBar();
             }
-
+            setStatusBarParams(mStatusBarView);
             updateCustomHeaderStatus();
 
         }
@@ -1042,7 +1044,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                     | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
                     | WindowManager.LayoutParams.FLAG_SPLIT_TOUCH,
-                PixelFormat.TRANSLUCENT);
+                PixelFormat.OPAQUE);
         lp.gravity = Gravity.TOP | Gravity.FILL_HORIZONTAL;
         //lp.y += height * 1.5; // FIXME
         lp.setTitle("IntruderAlert");
@@ -1560,7 +1562,7 @@ public class PhoneStatusBar extends BaseStatusBar {
             mNavigationBarView.setSlippery(true);
 
         updateCarrierLabelVisibility(true);
-
+        mCompactToggles.updateVisibility();
         if (mTogglesType == TOGGLES_TYPE_COMPACT)
             mCompactToggles.updateVisibility();
         else if (mTogglesType == TOGGLES_TYPE_PAGE)
@@ -2848,6 +2850,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                 (mCurrentTheme == null || !mCurrentTheme.equals(newTheme))) {
             mCurrentTheme = (CustomTheme)newTheme.clone();
             recreateStatusBar();
+        setStatusBarParams(mStatusBarView);
         } else {
 
             if (mClearButton instanceof TextView) {

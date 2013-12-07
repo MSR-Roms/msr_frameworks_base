@@ -50,15 +50,6 @@
         android:orientation="horizontal"
         >
 
-        <com.android.systemui.statusbar.policy.Clock
-            android:id="@+id/clock"
-            android:textAppearance="@style/TextAppearance.StatusBar.Clock"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-           android:clickable="false"
-            />
-
         <LinearLayout
             android:id="@+id/notification_icon_area"
             android:layout_width="0dip"
@@ -79,6 +70,23 @@
                 android:layout_alignParentLeft="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"/>  
+        </LinearLayout>
+
+	<LinearLayout 
+            android:gravity="center" 
+	    android:orientation="horizontal" 
+            android:layout_width="wrap_content" 
+            android:layout_height="fill_parent">
+
+        <com.android.systemui.statusbar.policy.Clock
+            android:id="@+id/clock"
+            android:textAppearance="@style/TextAppearance.StatusBar.Clock"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center" 
+            android:clickable="false"
+            />
+
         </LinearLayout>
 
         <LinearLayout android:id="@+id/statusIcons"

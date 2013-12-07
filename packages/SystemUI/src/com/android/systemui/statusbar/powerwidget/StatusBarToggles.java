@@ -176,6 +176,12 @@ public class StatusBarToggles extends LinearLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.StatusBarToggles,
                 0, 0);
         mCompactLayout = a.getBoolean(R.styleable.StatusBarToggles_compactLayout, true);
+        if (mCompactLayout) {
+            updateButtonLayoutWidth();
+	    setupWidget();
+            recreateCompactLayout();
+        } else
+            recreatePageLayout();
     }
 
     @Override
