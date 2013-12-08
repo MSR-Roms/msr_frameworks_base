@@ -41,6 +41,12 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/notification_panel_header_height"
             />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_weight="0"
+            >
 
         <com.android.systemui.statusbar.powerwidget.StatusBarToggles
             android:id="@+id/exp_power_stat"
@@ -49,6 +55,8 @@
             android:orientation="horizontal"
             systemui:compactLayout="true"
             />
+
+        </FrameLayout>
 
         <TabHost
             android:id="@+id/status_bar_tab_host"

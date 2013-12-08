@@ -176,17 +176,10 @@ public class StatusBarToggles extends LinearLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.StatusBarToggles,
                 0, 0);
         mCompactLayout = a.getBoolean(R.styleable.StatusBarToggles_compactLayout, true);
-        if (mCompactLayout) {
-            updateButtonLayoutWidth();
-	    setupWidget();
-            recreateCompactLayout();
-        } else
-            recreatePageLayout();
     }
 
     @Override
     protected void onFinishInflate() {
-        updateButtonLayoutWidth();
         setupWidget();
         if (mCompactLayout == false)
             mBrightness = new BrightnessSlider(mContext, (SeekBar)findViewById(R.id.manual_brightness));
@@ -526,13 +519,6 @@ public class StatusBarToggles extends LinearLayout {
     private void updateButtonLayoutWidth() {
         // use our context to set a valid button width
         BUTTON_LAYOUT_PARAMS.width = this.getWidth() / LAYOUT_SCROLL_BUTTON_THRESHOLD;
-    }
-
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        if (mCompactLayout && oldw != w) {
-            BUTTON_LAYOUT_PARAMS.width = w / LAYOUT_SCROLL_BUTTON_THRESHOLD;;
-            recreateButtonLayout();
-        }
     }
 
     public void updateVisibility() {

@@ -45,6 +45,7 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.inputmethodservice.InputMethodService;
@@ -342,8 +343,6 @@ public class PhoneStatusBar extends BaseStatusBar {
                     Settings.System.COLLAPSE_VOLUME_PANEL), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CENTER_CLOCK), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_TRANSPARENCY), false, this);
             update();
         }
 
@@ -365,6 +364,8 @@ public class PhoneStatusBar extends BaseStatusBar {
             if (mNotificationPanel != null) {
                 setTogglesType(mTogglesType);
             }
+            if (mTogglesType == TOGGLES_TYPE_COMPACT)
+                mCompactToggles.updateVisibility();
 
             mCollapseVolumes = Settings.System.getInt(
                     resolver, Settings.System.COLLAPSE_VOLUME_PANEL, 0) == 1;
@@ -375,7 +376,6 @@ public class PhoneStatusBar extends BaseStatusBar {
                 mUseCenterClock = useCenterClock;
                 recreateStatusBar();
             }
-            setStatusBarParams(mStatusBarView);
             updateCustomHeaderStatus();
 
         }
@@ -829,6 +829,18 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     private void setNotificationPanelHeaderBackground(final Drawable dw) {
         Drawable[] arrayDrawable = new Drawable[2];
+
+        if (dw instanceof BitmapDrawable) {
+            BitmapDrawable bdw = (BitmapDrawable) dw;
+            bdw.setGravity(Gravity.TOP);
+        }
+
+        if (!(dw instanceof BitmapDrawable) &&
+             !(mNotificationPanelHeader.getBackground() instanceof BitmapDrawable) &&
+             !(mNotificationPanelHeader.getBackground() instanceof TransitionDrawable)) {
+            return;
+        }
+
         arrayDrawable[0] = mNotificationPanelHeader.getBackground();
         arrayDrawable[1] = dw;
 
@@ -1378,7 +1390,8 @@ public class PhoneStatusBar extends BaseStatusBar {
                 })
                 .start();
         }
-
+        if (mTogglesType == TOGGLES_TYPE_COMPACT)
+            mCompactToggles.updateVisibility();
         updateCarrierLabelVisibility(false);
     }
 
@@ -1562,7 +1575,7 @@ public class PhoneStatusBar extends BaseStatusBar {
             mNavigationBarView.setSlippery(true);
 
         updateCarrierLabelVisibility(true);
-        mCompactToggles.updateVisibility();
+
         if (mTogglesType == TOGGLES_TYPE_COMPACT)
             mCompactToggles.updateVisibility();
         else if (mTogglesType == TOGGLES_TYPE_PAGE)
@@ -2850,7 +2863,6 @@ public class PhoneStatusBar extends BaseStatusBar {
                 (mCurrentTheme == null || !mCurrentTheme.equals(newTheme))) {
             mCurrentTheme = (CustomTheme)newTheme.clone();
             recreateStatusBar();
-        setStatusBarParams(mStatusBarView);
         } else {
 
             if (mClearButton instanceof TextView) {
