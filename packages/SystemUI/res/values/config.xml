@@ -65,5 +65,8 @@
 
     <!-- The length of the vibration when the notificaiotn pops open. -->
     <integer name="blinds_pop_duration_ms">10</integer>
+
+    <!-- configurable height dimension for the status bar trigger -->
+    <dimen name="config_trigger_view_height">4dip</dimen>
 </resources>
 
