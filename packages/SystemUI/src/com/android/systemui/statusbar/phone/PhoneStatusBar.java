@@ -92,6 +92,7 @@ import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.statusbar.StatusBarNotification;
 
 import com.android.systemui.statusbar.powerwidget.PowerWidget;
+import com.android.systemui.statusbar.spacewidget.SpaceWidget;
 
 import com.android.systemui.R;
 import com.android.systemui.recent.RecentTasksLoader;
@@ -243,6 +244,7 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     // the power widget
     PowerWidget mPowerWidget;
+    SpaceWidget mSpaceWidget;
 
     // ticker
     private Ticker mTicker;
@@ -514,6 +516,9 @@ public class PhoneStatusBar extends BaseStatusBar {
         if (mRecreating)
             mPowerWidget.destroyWidget();
 
+        if (mRecreating)
+            mSpaceWidget.destroyWidget();
+
         mPile = (NotificationRowLayout)mStatusBarWindow.findViewById(R.id.latestItems);
         mPile.setLayoutTransitionsEnabled(false);
         mPile.setLongPressListener(getNotificationLongClicker());
@@ -588,6 +593,22 @@ public class PhoneStatusBar extends BaseStatusBar {
                     }
                 });
         mPowerWidget.setGlobalButtonOnLongClickListener(new View.OnLongClickListener() {
+            public boolean onLongClick(View v) {
+                animateCollapse();
+                return true;
+            }
+        });
+
+        mSpaceWidget = (SpaceWidget)mStatusBarWindow.findViewById(R.id.space_power_stat);
+        mSpaceWidget.setGlobalButtonOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if(Settings.System.getInt(mContext.getContentResolver(),
+                                Settings.System.EXPANDED_HIDE_ONCHANGE, 0) == 1) {
+                            animateCollapse();
+                        }
+                    }
+                });
+        mSpaceWidget.setGlobalButtonOnLongClickListener(new View.OnLongClickListener() {
             public boolean onLongClick(View v) {
                 animateCollapse();
                 return true;
@@ -670,6 +691,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         context.registerReceiver(mBroadcastReceiver, filter);
 
         mPowerWidget.setupWidget();
+        mSpaceWidget.setupWidget();
 
         mVelocityTracker = VelocityTracker.obtain();
 
@@ -951,6 +973,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         view.set(icon);
         mStatusIcons.addView(view, viewIndex, new LinearLayout.LayoutParams(mIconSize, mIconSize));
         mPowerWidget.updateAllButtons();
+        mSpaceWidget.updateAllButtons();
     }
 
     public void updateIcon(String slot, int index, int viewIndex,

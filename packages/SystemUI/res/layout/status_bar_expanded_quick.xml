@@ -7,6 +7,21 @@
     android:orientation="vertical"
     >
 
+    <FrameLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_gravity="top"
+         android:layout_weight="0"
+         >
+
+        <com.android.systemui.statusbar.spacewidget.SpaceWidget
+            android:id="@+id/space_power_stat"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/notification_panel_widget_height"
+        />
+
+    </FrameLayout> 
+
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
@@ -14,13 +29,6 @@
         android:fadingEdge="none"
         android:overScrollMode="always"
         >
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:scaleType="fitCenter"
-        android:src="@drawable/redbeandroid" />
         
     </ScrollView>
 </LinearLayout>
