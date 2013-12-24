@@ -2463,6 +2463,42 @@ public final class Settings {
         public static final String STATUS_BAR_AM_PM = "status_bar_am_pm";
 
 
+        /**
+         * Use the QuickPanel Widget? (Who wouldn't!)
+         *
+         * @hide
+         */
+        public static final String QUICKER_VIEW_WIDGET = "quicker_view_widget";
+
+        /**
+         * Whether to hide the notification screen after clicking on a widget
+         * button
+         *
+         * @hide
+         */
+        public static final String QUICKER_HIDE_ONCHANGE = "quicker_hide_onchange";
+
+        /**
+         * Hide scroll bar in power widget
+         *
+         * @hide
+         */
+        public static final String QUICKER_HIDE_SCROLLBAR = "quicker_hide_scrollbar";
+
+        /**
+         * Haptic feedback in power widget
+         *
+         * @hide
+         */
+        public static final String QUICKER_HAPTIC_FEEDBACK = "quicker_haptic_feedback";
+
+        /**
+         * Widget Buttons to Use
+         *
+         * @hide
+         */
+        public static final String SPACE_WIDGET_BUTTONS = "space_widget_buttons";
+
         /* Network speed indicator
          * @hide
          */

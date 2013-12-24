@@ -468,17 +468,17 @@ public class SpaceWidget extends FrameLayout {
 
             // watch for display widget
             resolver.registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.EXPANDED_VIEW_WIDGET),
+                    Settings.System.getUriFor(Settings.System.QUICKER_VIEW_WIDGET),
                             false, this);
 
             // watch for scrollbar hiding
             resolver.registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.EXPANDED_HIDE_SCROLLBAR),
+                    Settings.System.getUriFor(Settings.System.QUICKER_HIDE_SCROLLBAR),
                             false, this);
 
             // watch for haptic feedback
             resolver.registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.EXPANDED_HAPTIC_FEEDBACK),
+                    Settings.System.getUriFor(Settings.System.QUICKER_HAPTIC_FEEDBACK),
                             false, this);
             resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.HAPTIC_FEEDBACK_ENABLED),
@@ -507,18 +507,18 @@ public class SpaceWidget extends FrameLayout {
             Resources res = mContext.getResources();
 
             // first check if our widget buttons have changed
-            if(uri.equals(Settings.System.getUriFor(Settings.System.WIDGET_BUTTONS))) {
+            if(uri.equals(Settings.System.getUriFor(Settings.System.SPACE_WIDGET_BUTTONS))) {
                 setupWidget();
             // now check if we change visibility
-            } else if(uri.equals(Settings.System.getUriFor(Settings.System.EXPANDED_VIEW_WIDGET))) {
+            } else if(uri.equals(Settings.System.getUriFor(Settings.System.QUICKER_VIEW_WIDGET))) {
                 updateVisibility();
             // now check for scrollbar hiding
-            } else if(uri.equals(Settings.System.getUriFor(Settings.System.EXPANDED_HIDE_SCROLLBAR))) {
+            } else if(uri.equals(Settings.System.getUriFor(Settings.System.QUICKER_HIDE_SCROLLBAR))) {
                 updateScrollbar();
             }
 
             if (uri.equals(Settings.System.getUriFor(Settings.System.HAPTIC_FEEDBACK_ENABLED))
-                    || uri.equals(Settings.System.getUriFor(Settings.System.EXPANDED_HAPTIC_FEEDBACK))) {
+                    || uri.equals(Settings.System.getUriFor(Settings.System.QUICKER_HAPTIC_FEEDBACK))) {
                 updateHapticFeedbackSetting();
             }
 
