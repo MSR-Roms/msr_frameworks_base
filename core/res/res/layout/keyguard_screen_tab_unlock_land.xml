@@ -306,7 +306,7 @@
 
 	<com.android.internal.widget.AcerView
             android:id="@+id/acer_widget"
-            android:layout_width="match_paren"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
 
