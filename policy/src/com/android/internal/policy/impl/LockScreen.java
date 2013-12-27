@@ -984,7 +984,7 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
             mGlowPadSelector.setVisibility(View.GONE);
             mSlidingTabSelector.setVisibility(View.GONE);
             mRotarySelector.setVisibility(View.GONE);
-            mUnlockWidget = mWaveViewSelector;
+            mUnlockWidget = mSenseViewSelector;
         }
 
         mUnlockWidgetMethods = createUnlockMethods(mUnlockWidget);
