@@ -30,6 +30,18 @@
     android:id="@+id/root"
     android:gravity="center_horizontal">
 
+    <com.android.internal.widget.AcerView
+        android:id="@+id/acer_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <com.android.internal.widget.SenseView
+        android:id="@+id/sense_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
     <com.android.internal.widget.DigitalClock android:id="@+id/time"
         android:layout_marginTop="@dimen/keyguard_lockscreen_status_line_clockfont_top_margin"
         android:layout_gravity="center_horizontal"
@@ -368,24 +380,12 @@
             android:layout_marginBottom="60dip"
             />
 
-	<com.android.internal.widget.AcerView
-            android:id="@+id/acer_widget"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            />
-
 	<com.android.internal.widget.WaveView
             android:id="@+id/waveview_widget"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
-            />
-
-        <com.android.internal.widget.SenseView
-            android:id="@+id/sense_widget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             />
 
         <TextView
