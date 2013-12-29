@@ -2472,6 +2472,24 @@ public final class Settings {
          */
         public static final String STATUS_BAR_AM_PM = "status_bar_am_pm";
 
+         /**
+         * Add option to display the navigation bar
+         * @hide
+         */
+        public static final String SHOW_NAVBAR = "show_navbar";
+
+         /**
+         * Enable/disable screenshot sound
+         * @hide
+         */
+        public static final String SCREENSHOT_SOUND = "screenshot_sound";
+
+        /**
+         * Screenshot delay
+         * @hide
+         */
+        public static final String SCREENSHOT_DELAY = "screenshot_delay";
+
         /**
          * Whether or not to use a center clock in phone status bar
          *
