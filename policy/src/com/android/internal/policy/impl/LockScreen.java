@@ -895,10 +895,66 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
 
         final LayoutInflater inflater = LayoutInflater.from(context);
         if (DBG) Log.v(TAG, "Creation orientation = " + mCreationOrientation);
-        if (mCreationOrientation != Configuration.ORIENTATION_LANDSCAPE) {
-            inflater.inflate(R.layout.keyguard_screen_tab_unlock, this, true);
-        } else {
-            inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this, true);
+
+        boolean landscape = mCreationOrientation == Configuration.ORIENTATION_LANDSCAPE;
+
+        switch (mLockscreenStyle) {
+            case LOCK_STYLE_JB:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock, this,
+                                    true);
+                break;
+            case LOCK_STYLE_ICS:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock, this,
+                                    true);
+                break;
+            case LOCK_STYLE_GB:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock, this,
+                                    true);
+                break;
+            case LOCK_STYLE_ECLAIR:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock, this,
+                                    true);
+                break;
+            case LOCK_STYLE_ACER:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_wavers_unlock, this,
+                                    true);
+                break;
+            case LOCK_STYLE_HONEY:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock, this,
+                                    true);
+                break;
+            case LOCK_STYLE_SENSE:
+                if (landscape)
+                    inflater.inflate(R.layout.keyguard_screen_tab_unlock_land, this,
+                                    true);
+                else
+                    inflater.inflate(R.layout.keyguard_screen_tab_wavers_unlock, this,
+                                    true);
+                break;
         }
 
         setBackground(mContext, (ViewGroup) findViewById(R.id.root));
