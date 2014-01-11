@@ -58,6 +58,12 @@
             android:layout_height="@dimen/notification_panel_widget_height"
         />
 
+        <com.android.systemui.statusbar.QuickTileView android:id="@+id/quick_tile_view"
+             android:layout_width="0.0dip"
+             android:layout_height="0.0dip" >
+             <include layout="@layout/quicktile" />
+        </com.android.systemui.statusbar.QuickTileView>
+
         <com.android.systemui.statusbar.spacewidget.SpaceWidget
             android:id="@+id/space_power_stat"
             android:layout_width="0.0dip"

@@ -165,4 +165,7 @@
 
     <!-- Height of trigger for revealing a hidden status bar or navbar -->
     <dimen name="trigger_view_height">2dip</dimen>
+    <dimen name="quick_settings_cell_height">110dp</dimen>
+    <dimen name="quick_settings_cell_gap">4dp</dimen>
+    <dimen name="quicktile_cell_gap">4dp</dimen>
 </resources>

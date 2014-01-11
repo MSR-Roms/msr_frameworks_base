@@ -102,6 +102,7 @@ import com.android.systemui.statusbar.NotificationData.Entry;
 import com.android.systemui.statusbar.CommandQueue;
 import com.android.systemui.statusbar.RotationToggle;
 import com.android.systemui.statusbar.SignalClusterView;
+import com.android.systemui.statusbar.QuickTileView;
 import com.android.systemui.statusbar.StatusBarIconView;
 import com.android.systemui.statusbar.policy.BatteryController;
 import com.android.systemui.statusbar.policy.Clock;
@@ -170,7 +171,7 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     PhoneStatusBarPolicy mIconPolicy;
 
-    private boolean mUseQuickerPanel = true;
+    private boolean mUseQuickerPanel = false;
 
     // These are no longer handled by the policy, because we need custom strategies for them
     BatteryController mBatteryController;
@@ -211,6 +212,8 @@ public class PhoneStatusBar extends BaseStatusBar {
     View mButtonsBar;
     View mClearButton;
     View mSettingsButton;
+    View mAlarmButton;
+    View mSettingsqsButton;
     RotationToggle mRotationButton;
 
     // carrier/wifi label
@@ -234,6 +237,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     // the clock and date view
     Clock mClockView;
     DateView mDateView;
+    QuickTileView mQuickTile;
 
     // for immersive activities
     private IntruderAlertView mIntruderAlertView;
@@ -334,7 +338,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                     resolver, Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL, 0) == 1;
 
             boolean useQuickerPanel = Settings.System.getInt(
-                    resolver, Settings.System.STATUS_BAR_QUICKER_PANEL, 1) == 1;
+                    resolver, Settings.System.STATUS_BAR_QUICKER_PANEL, 0) == 1;
             if (mUseQuickerPanel != useQuickerPanel) {
                 mUseQuickerPanel = useQuickerPanel;
                 recreateStatusBar();
@@ -579,6 +583,10 @@ public class PhoneStatusBar extends BaseStatusBar {
         });
         mSettingsButton = mStatusBarWindow.findViewById(R.id.settings_button);
         mSettingsButton.setOnClickListener(mSettingsButtonListener);
+        mAlarmButton = mStatusBarWindow.findViewById(R.id.alarmtile);
+        mAlarmButton.setOnClickListener(mAlarmButtonListener);
+        mSettingsqsButton = mStatusBarWindow.findViewById(R.id.settingtile);
+        mSettingsqsButton.setOnClickListener(mSettingsButtonListener);
         mRotationButton = (RotationToggle) mStatusBarWindow.findViewById(R.id.rotation_lock_button);
         mButtonsBar = mStatusBarWindow.findViewById(R.id.buttons_bar);
 
@@ -654,6 +662,8 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         mNetworkController.addSignalCluster(signalCluster);
         signalCluster.setNetworkController(mNetworkController);
+
+	mQuickTile = (QuickTileView)mStatusBarWindow.findViewById(R.id.quick_tile_view);
 
         mEmergencyCallLabel = (TextView)mStatusBarWindow.findViewById(R.id.emergency_calls_only);
         if (mEmergencyCallLabel != null) {
@@ -2642,6 +2652,21 @@ public class PhoneStatusBar extends BaseStatusBar {
             if (!isDeviceProvisioned()) return;
             try {
                 // Dismiss the lock screen when Settings starts.
+                ActivityManagerNative.getDefault().dismissKeyguardOnNextActivity();
+            } catch (RemoteException e) {
+            }
+            v.getContext().startActivity(new Intent(Settings.ACTION_SETTINGS)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            animateCollapse();
+        }
+    };
+
+    private View.OnClickListener mAlarmButtonListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            // We take this as a good indicator that Setup is running and we shouldn't
+            // allow you to go somewhere else
+            if (!isDeviceProvisioned()) return;
+            try {
                 ActivityManagerNative.getDefault().dismissKeyguardOnNextActivity();
             } catch (RemoteException e) {
             }

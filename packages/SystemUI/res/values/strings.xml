@@ -425,4 +425,11 @@
     <string name="navbar_menu_conditional_button">Menu (autoHide) button</string>
     <string name="navbar_menu_always_button">Menu (alwaysShow) button</string>
     <string name="navbar_menu_big_button">Menu button</string>
+    <string name="alarms">Alarm</string>
+    <string name="battery_qs">Batter</string>
+    <string name="location_qs">Location</string>
+    <string name="brightness_qs">Brightness</string>
+    <string name="signal_qs">Signal</string>
+    <string name="torch_qs">Torch</string>
+    <string name="wifi_qs">WiFi</string>
 </resources>
