@@ -171,7 +171,7 @@ public class SpaceWidget extends FrameLayout {
 
         Log.i(TAG, "Setting up widget");
 
-        String buttons = Settings.System.getString(mContext.getContentResolver(), Settings.System.WIDGET_BUTTONS);
+        String buttons = Settings.System.getString(mContext.getContentResolver(), Settings.System.SPACE_WIDGET_BUTTONS);
         if (buttons == null) {
             Log.i(TAG, "Default buttons being loaded");
             buttons = BUTTONS_DEFAULT;
@@ -395,7 +395,7 @@ public class SpaceWidget extends FrameLayout {
     private void updateVisibility() {
         // now check if we need to display the widget still
         boolean displayPowerWidget = Settings.System.getInt(mContext.getContentResolver(),
-                   Settings.System.EXPANDED_VIEW_WIDGET, 1) == 1;
+                   Settings.System.QUICKER_VIEW_WIDGET, 1) == 1;
         if(!displayPowerWidget) {
             setVisibility(View.GONE);
         } else {
@@ -406,14 +406,14 @@ public class SpaceWidget extends FrameLayout {
     private void updateScrollbar() {
         if (mScrollView == null) return;
         boolean hideScrollBar = Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.EXPANDED_HIDE_SCROLLBAR, 0) == 1;
+                    Settings.System.QUICKER_HIDE_SCROLLBAR, 0) == 1;
         mScrollView.setHorizontalScrollBarEnabled(!hideScrollBar);
     }
 
     private void updateHapticFeedbackSetting() {
         ContentResolver cr = mContext.getContentResolver();
         int expandedHapticFeedback = Settings.System.getInt(cr,
-                Settings.System.EXPANDED_HAPTIC_FEEDBACK, 2);
+                Settings.System.QUICKER_HAPTIC_FEEDBACK, 2);
         long[] clickPattern = null, longClickPattern = null;
         boolean hapticFeedback;
 
@@ -486,7 +486,7 @@ public class SpaceWidget extends FrameLayout {
 
             // watch for changes in buttons
             resolver.registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.WIDGET_BUTTONS),
+                    Settings.System.getUriFor(Settings.System.SPACE_WIDGET_BUTTONS),
                             false, this);
 
             // watch for power-button specific stuff that has been loaded
